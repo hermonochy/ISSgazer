@@ -16,6 +16,8 @@ print(predicted_pass)
 
 position = predictor.get_position(predicted_pass.aos)
 
+print(position)
+
 OXFORD.is_visible(position)  # Can I see the ISS from this location?
 #True
 
@@ -23,10 +25,12 @@ import datetime
 
 position_delta = predictor.get_position(predicted_pass.los + datetime.timedelta(minutes=20))
 
+print(position_delta)
+
 OXFORD.is_visible(position_delta)
 #False
 
 tomorrow = datetime.datetime.utcnow() + datetime.timedelta(days=1)
 
-predictor.get_next_pass(OXFORD, tomorrow, max_elevation_gt=20)
-
+next_predicted_path_tomorrow = predictor.get_next_pass(OXFORD, tomorrow, max_elevation_gt=20)
+print(next_predicted_path_tomorrow)
