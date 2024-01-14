@@ -6,7 +6,7 @@ from orbit_predictor.locations import Location
 OXFORD = Location(
     "OXFORD", latitude_deg=-1.20187, longitude_deg=51.75524, elevation_m=26.00)
 
-source = EtcTLESource(filename="trajectorydata/240111iss.tle")
+source = EtcTLESource(filename="../trajectorydata/240111iss.tle")
 predictor = source.get_predictor("ISS")
 
 predicted_pass = predictor.get_next_pass(OXFORD)
