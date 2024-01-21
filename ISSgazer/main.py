@@ -1,9 +1,11 @@
 import PySimpleGUI as sg
+import datetime as dt
 
+utc_now = dt.datetime.utcnow()
 
 layout = [
     [sg.Text("ISS Gazer")],
-    [sg.Text("")], 
+    [sg.Text(""+ utc_now.__repr__() )], 
     [sg.Button("Reset")],
     [sg.Button("Play")],
     [sg.Button("Next Passover")],]
