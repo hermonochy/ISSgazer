@@ -57,8 +57,7 @@ while True:
         window['datetimeText'].update( text )
         continue
     print ("event loop info: ",event,values)
-    if event == "Quit" or event == sg.WIN_CLOSED:
-        break
+    
     if event == "Reset" :
         timeout = None 
         issDeltaTime = 0
@@ -73,4 +72,10 @@ while True:
     if event == '-LOCATION_CITY-':
          lat, lng = getCoordinates(values['-LOCATION_COUNTRY-'], values['-LOCATION_CITY-'])
          window['coordinatesText'].update("Coordinates:  " + str(lat)+"  , "+str(lng))
+    if event == "Quit" or event == sg.WIN_CLOSED:
+         savedLocation = {'country': values['-LOCATION_COUNTRY-'], 'city': values['-LOCATION_CITY-']}
+         savedLocationString = json.dumps(savedLocation)
+         with open('../data/savedLocation.json','w') as savedLocation_file:
+            savedLocation_file.write(savedLocationString)
+         break
 print('Shutting down...')       
