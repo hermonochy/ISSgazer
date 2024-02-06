@@ -1,6 +1,11 @@
 import PySimpleGUI as sg
 import datetime as dt
 import json
+from pathlib import Path
+import sys
+
+citiesFilePath = Path('..') / 'data' / 'cities.json'
+savedLocationFilePath = Path('..') / 'data' / 'savedLocation.json'
 
 def printDeltaTime(deltaSeconds = 0):
    t = (dt.datetime.utcnow() + dt.timedelta(seconds = deltaSeconds ))     
@@ -13,17 +18,28 @@ def getCoordinates(country, city):
   return selectedCity[0]['lat'], selectedCity[0]['lng']
 
 
-with open('../data/cities.json') as cities_file:
+with citiesFilePath.open() as cities_file:
   cities_file_content = cities_file.read()
 citiesCoordinateDict = json.loads(cities_file_content)
 countriesList = list(set([c['country'] for c in citiesCoordinateDict]))
 countriesList.sort()
+try:
+  with savedLocationFilePath.open() as savedLocation_file:
+    savedLocation_file_content = savedLocation_file.read()
+  savedLocationDict = json.loads(savedLocation_file_content)
+  selectedCountry = savedLocationDict["country"]
+  selectedCity = savedLocationDict["city"]
+except:
+  selectedCountry = "GB"
+  selectedCity =  "Oxford"
 
-selectedCountry = 'GB'
-selectedCity = 'Oxford'
-
-lat, lng = getCoordinates('GB','Oxford')
-
+try:
+  lat, lng = getCoordinates(selectedCountry,selectedCity)
+except IndexError:
+  print ("IndexError! Erasing corrupted savedlocation file!")
+  savedLocationFilePath.unlink()
+  print ("Please restart!")
+  sys.exit()
 
 citiesList=[c['name'] for c in citiesCoordinateDict if c['country']==selectedCountry]
 citiesList.sort()
@@ -75,7 +91,7 @@ while True:
     if event == "Quit" or event == sg.WIN_CLOSED:
          savedLocation = {'country': values['-LOCATION_COUNTRY-'], 'city': values['-LOCATION_CITY-']}
          savedLocationString = json.dumps(savedLocation)
-         with open('../data/savedLocation.json','w') as savedLocation_file:
+         with savedLocationFilePath.open('w') as savedLocation_file:
             savedLocation_file.write(savedLocationString)
          break
 print('Shutting down...')       
