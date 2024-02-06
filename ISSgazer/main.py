@@ -45,8 +45,10 @@ citiesList=[c['name'] for c in citiesCoordinateDict if c['country']==selectedCou
 citiesList.sort()
 layout = [
     [sg.Text("ISS Gazer")],
-    [sg.Combo(countriesList, default_value=selectedCountry, s=(15,22), enable_events=True, readonly=True, k='-LOCATION_COUNTRY-')],
-    [sg.Combo(citiesList, default_value=selectedCity, s=(15,22), enable_events=True, readonly=True, k='-LOCATION_CITY-')],
+    [sg.Text("Country: "), sg.Combo(countriesList, default_value=selectedCountry, s=(15,22), \
+        enable_events=True, readonly=True, k='-LOCATION_COUNTRY-')],
+    [sg.Text("City: "), sg.Combo(citiesList, default_value=selectedCity, s=(15,22), \
+        enable_events=True, readonly=True, k='-LOCATION_CITY-')],
     [sg.Text("Coordinates:  " + str(lat )+"  , "+str( lng) , key="coordinatesText" )],
     [sg.Text(""+ printDeltaTime(), key="datetimeText" )], 
     [sg.Button("Reset")],
