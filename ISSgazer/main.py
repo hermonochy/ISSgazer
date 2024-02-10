@@ -3,9 +3,17 @@ import datetime as dt
 import json
 from pathlib import Path
 import sys
+import PIL.Image
+import io
 
 citiesFilePath = Path('..') / 'data' / 'cities.json'
 savedLocationFilePath = Path('..') / 'data' / 'savedLocation.json'
+worldmapFilePath = Path('..') / 'data' / 'world-map.png'
+ 
+def getXYCoordinates(lat,lng,w,h):
+    x= w/360*lng+w/2
+    y=-h/180*lat+h/2
+    return int(x+0.5),int(y+0.5)
 
 def printDeltaTime(deltaSeconds = 0):
    t = (dt.datetime.utcnow() + dt.timedelta(seconds = deltaSeconds ))     
@@ -16,6 +24,27 @@ def getCoordinates(country, city):
   selectedCity = [c for c in cities if c['name']==city]
   print(selectedCity[0])
   return selectedCity[0]['lat'], selectedCity[0]['lng']
+  
+def loadWorldMap(lat,lng):
+    lat,lng = int(float(lat)),int(float(lng))
+    img = PIL.Image.open(worldmapFilePath) 
+    cur_width, cur_height = img.size  
+    scale = 0.5
+    img = img.resize((int(cur_width*scale), int(cur_height*scale)), PIL.Image.LANCZOS)
+                  
+    x,y= getXYCoordinates(lat,lng,cur_width*scale-1, cur_height*scale-1)
+    for i in range (-5,6):
+       
+       try:
+         img.putpixel((x+i,y), (255,0,0))
+         img.putpixel((x,y+i), (255,0,0))
+       except IndexError:
+         print ("Coordinates out of range!")
+       
+    bio = io.BytesIO()
+    img.save(bio, format="PNG")
+    del img
+    return bio.getvalue()  
 
 
 with citiesFilePath.open() as cities_file:
@@ -50,11 +79,13 @@ layout = [
     [sg.Text("City: "), sg.Combo(citiesList, default_value=selectedCity, s=(15,22), \
         enable_events=True, readonly=True, k='-LOCATION_CITY-')],
     [sg.Text("Coordinates:  " + str(lat )+"  , "+str( lng) , key="coordinatesText" )],
-    [sg.Text(""+ printDeltaTime(), key="datetimeText" )], 
-    [sg.Button("Reset")],
-    [sg.Button("Play")],
-    [sg.Button("Next Passover")],
-    [sg.Button("Quit")],]
+    [sg.Text(""+ printDeltaTime(), key="datetimeText" )],
+    [sg.Image(key='-IMAGE-')], 
+    [sg.Text("Prediction:"),
+    sg.Button("Reset"),
+    sg.Button("Play"),
+    sg.Button("Next Passover"),
+    sg.Button("Quit")],]
     
 window = sg.Window(
     "ISS Gazer",
@@ -64,7 +95,7 @@ window = sg.Window(
     element_justification="center",
     font="Helvetica 18",
 )
-
+window['-IMAGE-'].update(data=loadWorldMap(lat,lng))
 timeout = None
 issDeltaTime = 0 #dt.timedelta(seconds = 0 )
 while True:
@@ -90,6 +121,8 @@ while True:
     if event == '-LOCATION_CITY-':
          lat, lng = getCoordinates(values['-LOCATION_COUNTRY-'], values['-LOCATION_CITY-'])
          window['coordinatesText'].update("Coordinates:  " + str(lat)+"  , "+str(lng))
+         window['-IMAGE-'].update(data=loadWorldMap(lat,lng))
+         
     if event == "Quit" or event == sg.WIN_CLOSED:
          savedLocation = {'country': values['-LOCATION_COUNTRY-'], 'city': values['-LOCATION_CITY-']}
          savedLocationString = json.dumps(savedLocation)
