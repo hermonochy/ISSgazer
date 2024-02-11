@@ -43,6 +43,8 @@ Note that for high prediction accuracy it is a good idea to get the latest ISS t
 ## Future work
 - More user friendly selection of observer location.
 - Load latest ISS coordinates automatically.
+- Show local timezones of selected observation location instead of UTC.
 - Filter predictions by closest distance.
 - Filter predictions by time delta to sunrise or sunset.
 - Weather forecast for next passes.
+
