@@ -1,3 +1,0 @@
-[submodule "modules/orbit-predictor"]
-	path = modules/orbit-predictor
-	url = https://github.com/satellogic/orbit-predictor.git

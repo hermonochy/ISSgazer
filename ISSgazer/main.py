@@ -6,6 +6,7 @@ import sys
 import PIL.Image
 import io
 from orbit_predictor.sources import EtcTLESource
+from orbit_predictor.locations import Location
 source = EtcTLESource(filename="../data/iss.tle")
 predictor = source.get_predictor("ISS")
 
@@ -132,6 +133,11 @@ while True:
         issDeltaTime = 0
         window['datetimeText'].update( printDeltaTime(deltaSeconds=issDeltaTime) )   
     if event == "Play":
+         timeout = 100      
+    if event == "Next Passover":
+         location = Location("dummy", latitude_deg=float(lat), longitude_deg=float(lng), elevation_m=0.0)
+         nextpass = predictor.get_next_pass(location)     
+         issDeltaTime = (nextpass.aos - dt.datetime.utcnow()).total_seconds()
          timeout = 100
     if event == '-LOCATION_COUNTRY-':
          selectedCountry = values['-LOCATION_COUNTRY-']
