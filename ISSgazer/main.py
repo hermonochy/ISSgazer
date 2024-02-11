@@ -5,6 +5,9 @@ from pathlib import Path
 import sys
 import PIL.Image
 import io
+from orbit_predictor.sources import EtcTLESource
+source = EtcTLESource(filename="../data/iss.tle")
+predictor = source.get_predictor("ISS")
 
 citiesFilePath = Path('..') / 'data' / 'cities.json'
 savedLocationFilePath = Path('..') / 'data' / 'savedLocation.json'
@@ -25,7 +28,7 @@ def getCoordinates(country, city):
   print(selectedCity[0])
   return selectedCity[0]['lat'], selectedCity[0]['lng']
   
-def loadWorldMap(lat,lng):
+def loadWorldMap(lat,lng,lat_ISS=None,lng_ISS=None):
     lat,lng = int(float(lat)),int(float(lng))
     img = PIL.Image.open(worldmapFilePath) 
     cur_width, cur_height = img.size  
@@ -39,7 +42,17 @@ def loadWorldMap(lat,lng):
          img.putpixel((x+i,y), (255,0,0))
          img.putpixel((x,y+i), (255,0,0))
        except IndexError:
-         print ("Coordinates out of range!")
+         print ("Observer Coordinates out of range!")
+    
+    if lat_ISS is not None and lng_ISS is not None:
+       x,y= getXYCoordinates(lat_ISS,lng_ISS,cur_width*scale-1, cur_height*scale-1)
+       for i in range (-5,6):
+         try:
+           img.putpixel((x+i,y), (255,255,0))
+           img.putpixel((x,y+i), (255,255,0))
+         except IndexError:
+           print ("ISS Coordinates out of range!")
+    
        
     bio = io.BytesIO()
     img.save(bio, format="PNG")
@@ -104,6 +117,13 @@ while True:
         issDeltaTime += 10
         text = printDeltaTime(deltaSeconds=issDeltaTime)
         window['datetimeText'].update( text )
+        # Get ISS position
+        issTime = (dt.datetime.utcnow() + dt.timedelta(seconds = issDeltaTime ))
+        position = predictor.get_position(issTime)
+        llh_tuple=position.position_llh
+        issLat=llh_tuple[0]
+        issLng=llh_tuple[1]
+        window['-IMAGE-'].update(data=loadWorldMap(lat,lng,issLat,issLng))
         continue
     print ("event loop info: ",event,values)
     

@@ -2,6 +2,7 @@ certifi==2023.11.17
 charset-normalizer==3.3.2
 idna==3.6
 numpy==1.26.3
+pillow==10.2.0
 PySimpleGUI==4.60.5
 requests==2.31.0
 sgp4==2.23
