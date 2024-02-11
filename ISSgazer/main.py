@@ -12,7 +12,7 @@ predictor = source.get_predictor("ISS")
 
 citiesFilePath = Path('..') / 'data' / 'cities.json'
 savedLocationFilePath = Path('..') / 'data' / 'savedLocation.json'
-worldmapFilePath = Path('..') / 'data' / 'world-map.png'
+worldmapFilePath = Path('..') / 'data' / 'world-map.jpg'
  
 def getXYCoordinates(lat,lng,w,h):
     x= w/360*lng+w/2
@@ -112,6 +112,7 @@ window = sg.Window(
 window['-IMAGE-'].update(data=loadWorldMap(lat,lng))
 timeout = None
 issDeltaTime = 0 #dt.timedelta(seconds = 0 )
+issTime = dt.datetime.utcnow() 
 while True:
     event, values = window.read(timeout = timeout) 
     if event == "__TIMEOUT__":

@@ -4,26 +4,45 @@
 
 Tool to predict next times when the ISS is flying over your home. Tells you how well it is visible.
 
-Visualizes predicted ISS trajectory on world map. User interaction to predict position for selected times.
+Visualizes predicted ISS trajectory on world map. User interaction to predict position for selected location.
 
 
 ## How it works
 
-Latest ISS trajectory data are loaded from [ARISS](https://live.ariss.org/iss.txt).
+Latest ISS trajectory data needs to be fetched from [ARISS](https://live.ariss.org/iss.txt).
 
-Takes coordinates (latitude/longitude) of your home.
+User chooses country and city to specify coordinates (latitude/longitude) of observer.
 
-Predicts orbit of ISS and compiles a list of passover timings.
+Predicts orbit of ISS and next passover timings.
 
-For each passover, computes how far away from home coordinates and in which direction to look.
+
+![User interface. Red cross - Observer. Yellow cross - ISS location.](data/screenshot.png)
 
 ## Software dependencies
 
 - [Wrapper for orbit predictor](https://github.com/satellogic/orbit-predictor). Included as git submodule.
-- PySimpleGUI and TurtleGraphics for user interaction visualisation.
+- PySimpleGUI for user interaction visualisation.
 - [SGP4](https://github.com/brandon-rhodes/python-sgp4) for orbit prediction.
+- [Python Image Library](https://python-pillow.org/) for showing the world map.
 
+These modules can be installed with pip, using the `requirements.txt` file. See below
 
 ## Install and run
 
+Set up and activate a virtual environment if preferred. Inspect [this README](https://github.com/hermonochy/functionplotter/blob/main/README.md) for instructions.
 
+Install modules:
+`pip install -r requirements.txt `
+
+Run the code:
+`cd ISSgazer`
+`python main.py`
+
+Note that for high prediction accuracy it is a good idea to get the latest ISS trajectory data from [ARISS](https://live.ariss.org/iss.txt). Copy the coordinates into the `iss.tle` file in the data directory.
+
+## Future work
+- More user friendly selection of observer location.
+- Load latest ISS coordinates automatically.
+- Filter predictions by closest distance.
+- Filter predictions by time delta to sunrise or sunset.
+- Weather forecast for next passes.
