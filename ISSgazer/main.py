@@ -136,7 +136,7 @@ while True:
          timeout = 100      
     if event == "Next Passover":
          location = Location("dummy", latitude_deg=float(lat), longitude_deg=float(lng), elevation_m=0.0)
-         nextpass = predictor.get_next_pass(location)     
+         nextpass = predictor.get_next_pass(location, issTime)     
          issDeltaTime = (nextpass.aos - dt.datetime.utcnow()).total_seconds()
          timeout = 100
     if event == '-LOCATION_COUNTRY-':
