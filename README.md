@@ -28,8 +28,8 @@ Predicts orbit of ISS and next passover timings.
 These modules can be installed with pip, using the `requirements.txt` file. See below
 
 ## Install and run
-
-Set up and activate a virtual environment if preferred. Inspect [this README](https://github.com/hermonochy/functionplotter/blob/main/README.md) for instructions.
+It's recommended to use virtual environments to avoid a headache with Python module conflicts. Enter `python3 -m venv .` into the command line. If this does not work, you might need to install venv.
+Start it using `source ./bin/activate`
 
 Install modules:
 `pip install -r requirements.txt `
