@@ -1,5 +1,7 @@
 # ISS gazer
 
+![](data/screencast.webm)
+
 ## Purpose
 
 Tool to predict next times when the ISS is flying over your home. Tells you how well it is visible.
@@ -15,8 +17,8 @@ User chooses country and city to specify coordinates (latitude/longitude) of obs
 
 Predicts orbit of ISS and next passover timings.
 
-
-![User interface. Red cross - Observer. Yellow cross - ISS location.](data/screenshot.png)
+User interface. Red cross - Observer. Yellow cross - ISS location.
+![](data/screenshot.png)
 
 ## Software dependencies
 
