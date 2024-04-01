@@ -30,8 +30,8 @@ User interface. Red cross - Observer. Yellow cross - ISS location.
 These modules can be installed with pip, using the `requirements.txt` file. See below
 
 ## Install and run
-
-Set up and activate a virtual environment if preferred. Inspect [this README](https://github.com/hermonochy/functionplotter/blob/main/README.md) for instructions.
+It's recommended to use virtual environments to avoid a headache with Python module conflicts. Enter `python3 -m venv .` into the command line. If this does not work, you might need to install venv.
+Start it using `source ./bin/activate`
 
 Install modules:
 `pip install -r requirements.txt `
@@ -49,4 +49,5 @@ Note that for high prediction accuracy it is a good idea to get the latest ISS t
 - Filter predictions by closest distance.
 - Filter predictions by time delta to sunrise or sunset.
 - Weather forecast for next passes.
+- Option of 3D and 2D map.
 
