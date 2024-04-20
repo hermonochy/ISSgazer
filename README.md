@@ -20,6 +20,10 @@ Predicts orbit of ISS and next passover timings.
 User interface. Red cross - Observer. Yellow cross - ISS location.
 ![](data/screenshot.png)
 
+Choose the location of observer from the box on top. The ISS is tracking from current time, and jumps to a future time just before pass overs after pressing the button `Next passover`.
+![](data/ISSgazer.gif)
+
+
 ## Software dependencies
 
 - [Wrapper for orbit predictor](https://github.com/satellogic/orbit-predictor). Included as git submodule.
